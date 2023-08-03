@@ -48,4 +48,9 @@ public class ArticleController {
     public List<Map<String, Object>> getArticlesWithRecentComments() {
         return articleService.getArticlesWithRecentComments();
     }
+
+    @GetMapping("/similar/{articleId}")
+    public List<Article> getSimilarArticles(@PathVariable Long articleId) {
+        return articleService.findSimilarArticles(articleId);
+    }
 }

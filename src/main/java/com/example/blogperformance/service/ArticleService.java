@@ -5,19 +5,18 @@ import com.example.blogperformance.model.Comment;
 import com.example.blogperformance.repository.ArticleRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
+    private final ArticleSimilarityService articleSimilarityService;
 
-    public ArticleService(ArticleRepository articleRepository) {
+    public ArticleService(ArticleRepository articleRepository, ArticleSimilarityService articleSimilarityService) {
         this.articleRepository = articleRepository;
+        this.articleSimilarityService = articleSimilarityService;
     }
 
     public List<Article> getArticles() {
@@ -89,6 +88,36 @@ public class ArticleService {
             articles.removeIf(article -> article.getId().equals(articleSummary.get("id")));
         }
         return articles;
+    }
+
+    public List<Article> findSimilarArticles(Long articleId) {
+        Article article = articleRepository.findById(articleId).orElseThrow();
+
+        Map<Article, Double> similarityScores = new HashMap<>();
+
+        List<Article> allArticles = articleRepository.findAll();
+        for (Article potentialArticle : allArticles) {
+            if (!potentialArticle.getId().equals(articleId)) {
+                double score = articleSimilarityService.getTotalScore(potentialArticle, article);
+                similarityScores.put(potentialArticle, score);
+            }
+        }
+
+        return getTopMatchingArticles(similarityScores);
+    }
+
+
+    private static List<Article> getTopMatchingArticles(Map<Article, Double> similarityScores) {
+        // Sorting the map based on values (similarity scores)
+        List<Map.Entry<Article, Double>> entryList = new ArrayList<>(similarityScores.entrySet());
+        entryList.sort(Map.Entry.comparingByValue(Comparator.reverseOrder()));
+
+        // Getting the top 3 articles
+        List<Article> topArticles = new ArrayList<>();
+        for (int i = 0; i < 3 && i < entryList.size(); i++) {
+            topArticles.add(entryList.get(i).getKey());
+        }
+        return topArticles;
     }
 }
 

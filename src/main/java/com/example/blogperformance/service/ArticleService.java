@@ -1,5 +1,6 @@
 package com.example.blogperformance.service;
 
+import com.example.blogperformance.dto.ArticleWithCommentsStatsDTO;
 import com.example.blogperformance.model.Article;
 import com.example.blogperformance.model.Comment;
 import com.example.blogperformance.repository.ArticleRepository;
@@ -39,18 +40,22 @@ public class ArticleService {
                 .collect(Collectors.toList());
     }
 
-    public List<Map<String, Object>> getArticlesWithRecentComments() {
+    public List<ArticleWithCommentsStatsDTO> getArticlesWithRecentComments() {
         // Check cache
-
-        List<Map<String, Object>> latestCommentedArticles = new ArrayList<>();
+        List<ArticleWithCommentsStatsDTO> latestCommentedArticles = new ArrayList<>();
 
         while (latestCommentedArticles.size() < 20) {
             List<Article> articles = getRemainingArticles(latestCommentedArticles);
             Comment latestComment = getLatestCommentFromArticles(articles);
 
             if (latestComment != null) {
-                Map<String, Object> articleSummaryMap = getArticleSummary(latestComment);
-                latestCommentedArticles.add(articleSummaryMap);
+                Article article = latestComment.getArticle();
+                ArticleWithCommentsStatsDTO articleSummary = new ArticleWithCommentsStatsDTO(article.getId(),
+                        article.getTitle(),
+                        article.getPublicationDate(),
+                        article.getComments().size(),
+                        latestComment.getCreatedAt());
+                latestCommentedArticles.add(articleSummary);
             }
         }
         return latestCommentedArticles;
@@ -67,25 +72,12 @@ public class ArticleService {
         return latestComment;
     }
 
-    private static Map<String, Object> getArticleSummary(Comment latestComment) {
-        Map<String, Object> articleSummaryMap = new HashMap<>();
-        Article article = latestComment.getArticle();
-
-        articleSummaryMap.put("id", article.getId());
-        articleSummaryMap.put("title", article.getTitle());
-        articleSummaryMap.put("publicationDate", article.getPublicationDate());
-        articleSummaryMap.put("numberOfComments", article.getComments().size());
-        articleSummaryMap.put("mostRecentCommentDate", latestComment.getCreatedAt());
-
-        return articleSummaryMap;
-    }
-
-    private List<Article> getRemainingArticles(List<Map<String, Object>> sortedArticleSummaries) {
+    private List<Article> getRemainingArticles(List<ArticleWithCommentsStatsDTO> sortedArticleSummaries) {
         List<Article> articles = new ArrayList<>(articleRepository.findAll());
 
         // Remove already added articles from the list
-        for (Map<String, Object> articleSummary : sortedArticleSummaries) {
-            articles.removeIf(article -> article.getId().equals(articleSummary.get("id")));
+        for (ArticleWithCommentsStatsDTO articleSummary : sortedArticleSummaries) {
+            articles.removeIf(article -> article.getId().equals(articleSummary.getId()));
         }
         return articles;
     }

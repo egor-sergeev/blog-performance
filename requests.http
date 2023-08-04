@@ -4,5 +4,8 @@ GET http://localhost:8080/articles/recent-comments
 ### Get articles that are similar to the given one
 GET http://localhost:8080/articles/similar/1
 
+###
+GET http://localhost:8080/comments
+
 
 

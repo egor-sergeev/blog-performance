@@ -1,13 +1,13 @@
 package com.example.blogperformance.controller;
 
+import com.example.blogperformance.dto.ArticleSummaryDTO;
+import com.example.blogperformance.dto.ArticleWithCommentsStatsDTO;
 import com.example.blogperformance.model.Article;
 import com.example.blogperformance.service.ArticleService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/articles")
@@ -20,14 +20,12 @@ public class ArticleController {
     }
 
     @GetMapping
-    public List<Map<String, Object>> getArticles() {
+    public List<ArticleSummaryDTO> getArticles() {
         List<Article> articles = articleService.getArticles();
-        List<Map<String, Object>> articleSummaries = new ArrayList<>();
+        List<ArticleSummaryDTO> articleSummaries = new ArrayList<>();
 
         for (Article article : articles) {
-            Map<String, Object> summary = new HashMap<>();
-            summary.put("id", article.getId());
-            summary.put("title", article.getTitle());
+            ArticleSummaryDTO summary = new ArticleSummaryDTO(article.getId(), article.getTitle(), article.getPublicationDate());
             articleSummaries.add(summary);
         }
 
@@ -45,7 +43,7 @@ public class ArticleController {
     }
 
     @GetMapping("/recent-comments")
-    public List<Map<String, Object>> getArticlesWithRecentComments() {
+    public List<ArticleWithCommentsStatsDTO> getArticlesWithRecentComments() {
         return articleService.getArticlesWithRecentComments();
     }
 

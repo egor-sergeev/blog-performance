@@ -11,8 +11,11 @@ import java.util.List;
 @RequestMapping("/comments")
 public class CommentController {
 
-    @Autowired
-    private CommentService commentService;
+    private final CommentService commentService;
+
+    public CommentController(CommentService commentService) {
+        this.commentService = commentService;
+    }
 
     @GetMapping
     public List<Comment> getComments() {

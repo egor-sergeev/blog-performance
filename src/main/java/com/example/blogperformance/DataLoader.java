@@ -22,9 +22,9 @@ import java.util.concurrent.TimeUnit;
 
 @Component
 public class DataLoader implements CommandLineRunner {
-    public static final int NUM_USERS = 1000;
-    public static final int NUM_ARTICLES = 50_000;
-    public static final int NUM_COMMENTS = 200_000;
+    public static final int NUM_USERS = 1_000;
+    public static final int NUM_ARTICLES = 2_000;
+    public static final int NUM_COMMENTS = 50_000;
     private final UserRepository userRepository;
     private final ArticleRepository articleRepository;
     private final CommentRepository commentRepository;
@@ -78,7 +78,8 @@ public class DataLoader implements CommandLineRunner {
         for (int i = 0; i < NUM_ARTICLES; i++) {
             Article article = new Article();
             article.setTitle(faker.book().title());
-            article.setContent(faker.lorem().paragraph());
+            // Generate a few paragraphs of random text
+            article.setContent(faker.lorem().paragraphs(20).stream().reduce("", (a, b) -> a + b));
             article.setPublicationDate(faker.date().past(365, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
             // Assign a random user as the author of the article
             article.setAuthor(users.get(random.nextInt(users.size())));

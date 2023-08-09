@@ -23,16 +23,21 @@ public class ArticleSimilarityService {
 
     private double jacquardSimilarity(String text1, String text2) {
         // Calculate Jacquard similarity between two texts
-        Set<String> set1 = new HashSet<>(Arrays.asList(text1.split(" ")));
-        Set<String> set2 = new HashSet<>(Arrays.asList(text2.split(" ")));
+        List<String> words1 = Arrays.asList(text1.split(" "));
+        List<String> words2 = Arrays.asList(text2.split(" "));
 
-        Set<String> intersection = new HashSet<>(set1);
-        intersection.retainAll(set2);
+        // Calculate intersection
+        List<String> intersection = new ArrayList<>(words1);
+        intersection.retainAll(words2);
+        Set<String> intersectionSet = new HashSet<>(intersection);
 
-        Set<String> union = new HashSet<>(set1);
-        union.addAll(set2);
+        // Calculate union
+        List<String> union = new ArrayList<>(words1);
+        union.addAll(words2);
+        Set<String> unionSet = new HashSet<>(union);
 
-        return (double) intersection.size() / union.size();
+        // Calculate Jacquard similarity
+        return (double) intersectionSet.size() / (double) unionSet.size();
     }
 
     public double calculateTitleSimilarity(Article article1, Article article2) {

@@ -8,11 +8,11 @@ import com.example.blogperformance.repository.ArticleRepository;
 import com.example.blogperformance.repository.CommentRepository;
 import com.example.blogperformance.repository.UserRepository;
 import com.github.javafaker.Faker;
-import org.springframework.transaction.annotation.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -23,13 +23,12 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class DataLoader implements CommandLineRunner {
     public static final int NUM_USERS = 1_000;
-    public static final int NUM_ARTICLES = 2_000;
+    public static final int NUM_ARTICLES = 5_000;
     public static final int NUM_COMMENTS = 50_000;
+    private static final Logger log = LoggerFactory.getLogger(DataLoader.class);
     private final UserRepository userRepository;
     private final ArticleRepository articleRepository;
     private final CommentRepository commentRepository;
-
-    private static final Logger log = LoggerFactory.getLogger(DataLoader.class);
 
     public DataLoader(UserRepository userRepository, ArticleRepository articleRepository, CommentRepository commentRepository) {
         this.userRepository = userRepository;

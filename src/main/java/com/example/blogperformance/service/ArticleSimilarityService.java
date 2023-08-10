@@ -10,7 +10,7 @@ import java.util.*;
 
 @Service
 public class ArticleSimilarityService {
-    double getTotalScore(Article potentialArticle, Article article) {
+    public double getTotalScore(Article potentialArticle, Article article) {
         double score = 1.0;
 
         score *= calculateTitleSimilarity(article, potentialArticle);
@@ -53,22 +53,32 @@ public class ArticleSimilarityService {
     }
 
     public double calculateRecentCommentsSimilarity(Article article1, Article article2) {
-        Optional<Comment> latestComment1Opt = article1.getComments().stream().max(Comparator.comparing(Comment::getCreatedAt));
-        Optional<Comment> latestComment2Opt = article2.getComments().stream().max(Comparator.comparing(Comment::getCreatedAt));
+        Comment latestComment1 = findLatestComment(article1);
+        Comment latestComment2 = findLatestComment(article2);
 
-        // If either article has no comments, return 0
-        if (latestComment1Opt.isEmpty() || latestComment2Opt.isEmpty()) {
+        if (latestComment1 == null || latestComment2 == null) {
             return 0;
         }
 
-        LocalDateTime latestComment1 = latestComment1Opt.get().getCreatedAt();
-        LocalDateTime latestComment2 = latestComment2Opt.get().getCreatedAt();
-        return 1.0 / (1.0 + Math.abs(Duration.between(latestComment1, latestComment2).toDays()));
+        return calculateSimilarity(latestComment1, latestComment2);
     }
+
+    private Comment findLatestComment(Article article) {
+        return article.getComments().stream()
+                .max(Comparator.comparing(Comment::getCreatedAt))
+                .orElse(null);
+    }
+
+    private double calculateSimilarity(Comment comment1, Comment comment2) {
+        LocalDateTime dateTime1 = comment1.getCreatedAt();
+        LocalDateTime dateTime2 = comment2.getCreatedAt();
+        return 1.0 / (1.0 + Math.abs(Duration.between(dateTime1, dateTime2).toDays()));
+    }
+
 
     public double calculateCommentUserSimilarity(Article article1, Article article2) {
         double similarity = 0.0;
-        int numberComments = 0;
+        int commentCount = 0;
         List<Comment> comments1 = article1.getComments();
         List<Comment> comments2 = article2.getComments();
 
@@ -76,11 +86,12 @@ public class ArticleSimilarityService {
             for (Comment comment2 : comments2) {
                 if (comment1.getUser().getId().equals(comment2.getUser().getId())) {
                     similarity += 1.0;
-                    numberComments++;
+                    commentCount++;
                 }
             }
         }
-        similarity = similarity / numberComments;
+
+        similarity = similarity / commentCount;
         return similarity;
     }
 }

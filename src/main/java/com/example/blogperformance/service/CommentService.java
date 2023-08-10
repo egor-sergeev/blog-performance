@@ -1,14 +1,14 @@
 package com.example.blogperformance.service;
 
-import org.springframework.stereotype.Service;
 import com.example.blogperformance.model.Comment;
 import com.example.blogperformance.repository.CommentRepository;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class CommentService {
-
     private final CommentRepository commentRepository;
 
     public CommentService(CommentRepository commentRepository) {

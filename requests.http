@@ -1,2 +1,47 @@
-### Get articles that are similar to the given one
+// Articles
+
+### Get all articles
+GET http://localhost:8080/articles
+Accept: application/json
+
+### Get single article
+GET http://localhost:8080/articles/1
+Accept: application/json
+
+### Get articles similar to the given one
 GET http://localhost:8080/articles/similar/1
+Accept: application/json
+
+
+// Users
+
+### Get all users
+GET http://localhost:8080/users
+Accept: application/json
+
+### Get single user
+GET http://localhost:8080/users/1
+Accept: application/json
+
+### Get user's articles
+GET http://localhost:8080/users/1/articles
+Accept: application/json
+
+### Get all users scores
+GET http://localhost:8080/users/score
+Accept: application/json
+
+
+// Comments
+
+### Get all comments
+GET http://localhost:8080/comments
+Accept: application/json
+
+### Get single comment
+GET http://localhost:8080/comments/1
+Accept: application/json
+
+### Get comments for article
+GET http://localhost:8080/comments/articles/1
+Accept: application/json

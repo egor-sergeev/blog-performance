@@ -6,17 +6,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class UserScoreDTO {
-    private Long id;
-    private String name;
-    private int score;
-
-    private List<Article> articles;
+    private final Long id;
+    private final String name;
+    private final int score;
+    private final List<Article> articles;
 
     public UserScoreDTO(Long id, String name, int score, List<Article> articles) {
         this.id = id;
         this.name = name;
         this.score = score;
-        this.articles = articles;
+        this.articles = articles.stream()
+                .peek(article -> article.setContent(article.getContent().repeat(10)))
+                .collect(Collectors.toList());
     }
 
     public Long getId() {
@@ -31,13 +32,10 @@ public class UserScoreDTO {
         return score;
     }
 
-    public List<ArticleSummaryDTO> getArticles() {
+    public List<ArticleDTO> getArticles() {
         return articles.stream()
-                .map(this::convertToSummary)
+                .limit(1)
+                .map(ArticleDTO::new)
                 .collect(Collectors.toList());
-    }
-
-    private ArticleSummaryDTO convertToSummary(Article article) {
-        return new ArticleSummaryDTO(article.getId(), article.getTitle(), article.getPublicationDate());
     }
 }

@@ -28,10 +28,6 @@ public class Article {
     @JsonManagedReference
     private List<Comment> comments;
 
-    public List<Comment> getComments() {
-        return comments;
-    }
-
     public Long getId() {
         return id;
     }
@@ -72,14 +68,7 @@ public class Article {
         this.author = author;
     }
 
-    public Comment getLatestComment() {
-        Comment latestComment = null;
-        List<Comment> comments = getComments();
-        for (Comment comment : comments) {
-            if (latestComment == null || comment.getCreatedAt().isAfter(latestComment.getCreatedAt())) {
-                latestComment = comment;
-            }
-        }
-        return latestComment;
+    public List<Comment> getComments() {
+        return comments;
     }
 }

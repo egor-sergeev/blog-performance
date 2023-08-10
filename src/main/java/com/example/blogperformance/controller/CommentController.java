@@ -2,7 +2,6 @@ package com.example.blogperformance.controller;
 
 import com.example.blogperformance.model.Comment;
 import com.example.blogperformance.service.CommentService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,7 +9,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/comments")
 public class CommentController {
-
     private final CommentService commentService;
 
     public CommentController(CommentService commentService) {

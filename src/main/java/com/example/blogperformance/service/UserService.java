@@ -17,14 +17,13 @@ import java.util.*;
 
 @Service
 public class UserService {
-
     private final UserRepository userRepository;
     private final ArticleRepository articleRepository;
     private final CommentRepository commentRepository;
 
     private final Map<Date, List<UserScoreDTO>> userScoreCache = new HashMap<>();
 
-    private static final Logger log = LoggerFactory.getLogger(UserService.class);
+    private final Logger log = LoggerFactory.getLogger(UserService.class);
 
 
     public UserService(UserRepository userRepository, ArticleRepository articleRepository, CommentRepository commentRepository) {

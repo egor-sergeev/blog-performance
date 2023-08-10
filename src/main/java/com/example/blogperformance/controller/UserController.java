@@ -1,5 +1,6 @@
 package com.example.blogperformance.controller;
 
+import com.example.blogperformance.dto.UserScoreDTO;
 import com.example.blogperformance.model.Article;
 import com.example.blogperformance.model.User;
 import com.example.blogperformance.service.ArticleService;
@@ -39,5 +40,10 @@ public class UserController {
     @GetMapping("/{id}/articles")
     public List<Article> getUserArticles(@PathVariable Long id) {
         return articleService.getArticlesByUserId(id);
+    }
+
+    @GetMapping("score")
+    public List<UserScoreDTO> getUsersScore() {
+        return userService.getUsersScore();
     }
 }

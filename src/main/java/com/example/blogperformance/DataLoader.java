@@ -49,6 +49,7 @@ public class DataLoader implements CommandLineRunner {
             loadData();
             log.info("Sample data generation completed.");
         } else log.info("Sample data already generated");
+        log.info("Application is ready");
     }
 
     private void loadData() {

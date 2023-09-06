@@ -21,31 +21,12 @@ public class ArticleSimilarityService {
         return score;
     }
 
-    private double jacquardSimilarity(String text1, String text2) {
-        // Calculate Jacquard similarity between two texts
-        List<String> words1 = Arrays.asList(text1.split(" "));
-        List<String> words2 = Arrays.asList(text2.split(" "));
-
-        // Calculate intersection
-        List<String> intersection = new ArrayList<>(words1);
-        intersection.retainAll(words2);
-        Set<String> intersectionSet = new HashSet<>(intersection);
-
-        // Calculate union
-        List<String> union = new ArrayList<>(words1);
-        union.addAll(words2);
-        Set<String> unionSet = new HashSet<>(union);
-
-        // Calculate Jacquard similarity
-        return (double) intersectionSet.size() / (double) unionSet.size();
-    }
-
     public double calculateTitleSimilarity(Article article1, Article article2) {
-        return jacquardSimilarity(article1.getTitle(), article2.getTitle());
+        return getTextSimilarity(article1.getTitle(), article2.getTitle());
     }
 
     public double calculateContentSimilarity(Article article1, Article article2) {
-        return jacquardSimilarity(article1.getContent(), article2.getContent());
+        return getTextSimilarity(article1.getContent(), article2.getContent());
     }
 
     public double calculateAuthorSimilarity(Article article1, Article article2) {
@@ -61,6 +42,32 @@ public class ArticleSimilarityService {
         }
 
         return calculateSimilarity(latestComment1, latestComment2);
+    }
+
+    private double getTextSimilarity(String text1, String text2) {
+        return jacquardSimilarity(text1, text2);
+    }
+
+    private double jacquardSimilarity(String text1, String text2) {
+        Set<String> intersectionSet = getIntersection(text1, text2);
+        Set<String> unionSet = getUnionSet(text1, text2);
+        return (double) intersectionSet.size() / (double) unionSet.size();
+    }
+
+    private static Set<String> getUnionSet(String text1, String text2) {
+        List<String> words1 = Arrays.asList(text1.split(" "));
+        List<String> words2 = Arrays.asList(text2.split(" "));
+        List<String> union = new ArrayList<>(words1);
+        union.addAll(words2);
+        return new HashSet<>(union);
+    }
+
+    private static Set<String> getIntersection(String text1, String text2) {
+        List<String> words1 = Arrays.asList(text1.split(" "));
+        List<String> words2 = Arrays.asList(text2.split(" "));
+        List<String> intersection = new ArrayList<>(words1);
+        intersection.retainAll(words2);
+        return new HashSet<>(intersection);
     }
 
     private Comment findLatestComment(Article article) {

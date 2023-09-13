@@ -9,4 +9,3 @@ models: Article, Comment, and User.
 * Article: Represents blog post with title and content.
 * Comment: Represents a comment on an article.
 * User: Represents a user of the platform that can author articles and comments.
-* 

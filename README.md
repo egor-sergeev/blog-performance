@@ -12,14 +12,15 @@ models: Article, Comment, and User.
 
 ## Installation and Setup
 
-1. Make sure you have Java SDK 19 and the latest version of Maven installed.
-2. Clone the repository:
+1. Clone the repository:
     * If you are using IntelliJ IDEA, select `File` | `New` | `Project from Version Control...` and paste the repository
       URL.
     * Alternatively, run `git clone https://github.com/egor-sergeev/blog-performance` from the command line.
-3. Install the dependencies:
+2. Install the dependencies:
     * If you are using IntelliJ IDEA, open the project in the IDE, and it will automatically download the dependencies.
     * Alternatively, navigate to the project directory and run: `mvn clean install`.
+
+If you have problems installing dependencies, make sure you have Java SDK 19 (or later) and the latest version of Maven installed.
 
 ## Running the Application
 

@@ -20,7 +20,7 @@ models: Article, Comment, and User.
     * If you are using IntelliJ IDEA, open the project in the IDE, and it will automatically download the dependencies.
     * Alternatively, navigate to the project directory and run: `mvn clean install`.
 
-If you have problems installing dependencies, make sure you have Java SDK 19 (or later) and the latest version of Maven installed.
+If you have problems installing dependencies, make sure you have Java SDK 17 (or later) and the latest version of Maven installed.
 
 ## Running the Application
 

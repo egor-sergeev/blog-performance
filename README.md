@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project implements a Spring Boot backend for a practice blogging platform, designed as a sandbox to practice
+This project implements a Spring Boot backend for a blogging platform, designed as a sandbox to practice
 diagnosing and mitigating bottlenecks in an application's performance. The application primarily consists of three
 models: Article, Comment, and User.
 

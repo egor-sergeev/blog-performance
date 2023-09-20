@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="BlogPerformanceApplication (limited heap size)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <module name="blog-performance" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.blogperformance.BlogPerformanceApplication" />
+    <option name="VM_PARAMETERS" value="-Xmx500m" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
